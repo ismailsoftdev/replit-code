@@ -36,4 +36,4 @@ The language model used in the code generator is the <code><i>replit/replit-code
 
 The model is used in conjunction with a tokenizer, which is responsible for converting the input code into a format that the model can understand. In this case, we use the AutoTokenizer class from the transformers library to automatically select the appropriate tokenizer for the replit/replit-code-v1-3b model.
 
-The generated code is produced using the <code>generate()></code> method of the AutoModelForCausalLM class, which performs language generation using the replit/replit-code-v1-3b model. The generate() method takes various parameters, such as max_length, top_p, and temperature, which control the behavior of the language generation process.
+The generated code is produced using the <code>generate()</code> method of the AutoModelForCausalLM class, which performs language generation using the replit/replit-code-v1-3b model. The generate() method takes various parameters, such as max_length, top_p, and temperature, which control the behavior of the language generation process.
