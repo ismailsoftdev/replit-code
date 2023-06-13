@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Code Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<!-- 
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com/dist/tailwind.min.css"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans text-gray-900 leading-normal">
+    <div class="max-w-lg mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-8">Code Generator</h1>
+        <div class="mb-4">
+          <label for="input-code" class="text-gray-700">Input Code:</label>
+          <textarea id="input-code" class="block w-full mt-1 rounded-lg shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
+        </div>
+        <button id="generate-code-btn" class="block px-4 py-2 mt-4 font-semibold text-white bg-indigo-500 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+          Generate Code
+        </button>
+        <div id="loading" class="mt-8 hidden">
+          <div class="w-full h-4 rounded-full overflow-hidden bg-gray-300">
+            <div class="w-0 h-full bg-indigo-500"></div>
+          </div>
+        </div>
+        <div id="generated-code-container" class="mt-8 border border-gray-300 rounded-lg">
+          <h2 class="bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-t-lg">Generated Code:</h2>
+          <pre><code id="generated-code" class="block w-full mt-1 rounded-b-lg shadow-sm"></code></pre>
+        </div>
+      </div>
+      <script>
+        const generateCodeBtn = document.getElementById('generate-code-btn');
+        const inputCodeTextarea = document.getElementById('input-code');
+        const generatedCodeContainer = document.getElementById('generated-code-container');
+        const generatedCodeCode = document.getElementById('generated-code');
+        const loading = document.getElementById('loading');
+  
+        generateCodeBtn.addEventListener('click', () => {
+            inputCode = inputCodeTextarea.value;
+  
+          // Show loading indicator
+          loading.classList.remove('hidden');
+  
+          fetch('http://127.0.0.1:5000/generate_code', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ input_text: inputCode })
+          }).then(response => response.json())
+            .then(data => {
+              // Hide loading indicator
+              loading.classList.add('hidden');
+  
+              // Show generated code container
+              generatedCodeContainer.classList.remove('hidden');
+  
+              generatedCodeCode.textContent = data.generated_code;
+              hljs.highlightBlock(generatedCodeCode);
+            });
+        });
+      </script>
+  </body>
+</html>
